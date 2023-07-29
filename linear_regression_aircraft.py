@@ -9,9 +9,9 @@ plt.style.use('./deeplearning.mplstyle')
 
 
 def load_data():
-    data = np.loadtxt("./data/aircraft-data-training.txt", delimiter="|", skiprows=1)
+    data = np.loadtxt("./data/aircraft-data-training.txt", delimiter="|", usecols=[1,2,3,4])
     X = data[:, :3]
-    Y = data[:, 4]
+    Y = data[:, 3]
     return X, Y
 
 
@@ -145,7 +145,7 @@ def zscore_normalize_features(X):
 
 def run_linear_regression():
     X_train, Y_train = load_data()
-    X_features = ['size(sqft)', 'bedrooms', 'floors']
+    X_features = ['year', 'seats', 'hours']
 
     fig, ax = plt.subplots(1, 3, figsize=(12, 5), sharey=False)
     plot_features(ax, X_train, Y_train, X_features, "Price (1000's)", "./figures/features-plots.png")
@@ -171,12 +171,12 @@ def run_linear_regression():
     plot_features(ax, X_norm, Y_train,X_features, "Price (1000's)", "./figures/features-unnormalized-plots.png")
 
     # First, normalize out example.
-    x_house = np.array([1200, 3, 1])
+    x_house = np.array([2007, 4, 510])
     x_house_norm = (x_house - u) / o
     print(x_house_norm)
     x_house_predict = np.dot(x_house_norm, w_norm) + b_norm
     print(
-        f" predicted price of a house with 1200 sqft, 3 bedrooms, 1 floor, 40 years old = ${x_house_predict * 1000:0.0f}")
+        f" predicted price of aircraft with 2007, 4 seats, 510 hours, 40 years old = ${x_house_predict * 1000:0.0f}")
 
 if __name__ == '__main__':
     run_linear_regression()

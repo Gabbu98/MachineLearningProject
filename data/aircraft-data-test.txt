@@ -9,6 +9,7 @@ Tecnam|1997|2|3432|Price upon request
 Cessna 210M|1979|6|4161|Price upon request
 Piper|1967|4|3345|Price upon request
 Piper|2000|4|8739|Price upon request
+Pitts|1977|1|Enquire|79995
 Diamond|1996|2|3592|Price upon request
 Piper|2000|4|8739|Price upon request
 Piper|1982|4|14834|Price upon request

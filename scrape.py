@@ -1,7 +1,6 @@
 import time
 
 from bs4 import BeautifulSoup
-from numpy.core.defchararray import isdigit
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium import webdriver
@@ -18,6 +17,53 @@ euro_pattern = re.compile("€[0-9]+,[0-9]+")
 pound_pattern = re.compile("£[0-9]+,[0-9]+")
 digit_pattern = re.compile("[0-9]+,[0-9]+")
 
+
+def currency_exchange():
+    list_from_test = []
+    list_from_data = []
+    with open('./data/test.txt', encoding='utf-8') as f:
+        raw_data = f.read().splitlines()
+        for line in raw_data:
+            entries = line.split("|")
+            list_from_test .append(entries)
+    f.close()
+
+    with open('./data/aircraft-data.txt', encoding='utf-8') as f:
+        raw_data = f.read().splitlines()
+        for line in raw_data:
+            entries = line.split("|")
+            list_from_data.append(entries)
+    f.close()
+    result = []
+    for entry in list_from_test:
+        col0 = entry[0]
+        col1 = entry[1]
+        col2 = entry[2]
+        col3 = entry[3]
+        col4 = entry[4]
+        value = 0
+        for entry2 in list_from_data:
+            if col0 == entry2[0] and str(col1) == entry2[1] and str(col2) == entry2[2] and str(col3) == entry2[3]:
+                print(entry2[4][0])
+                if entry2[4][0].__eq__('$'):
+                    col4 = float(col4) * 0.91
+                if entry2[4][0].__eq__('£'):
+                    col4 = float(col4) * 1.16
+                if entry2[4][0].__eq__('€'):
+                    col4 = float(col4)
+
+        result.append([col0,col1,col2,col3,col4])
+    with open('./data/test2.txt', 'w', encoding='utf-8') as f:
+        for entry in result:
+            col0 = entry[0]
+            col1 = entry[1]
+            col2 = entry[2]
+            col3 = entry[3]
+            col4 = entry[4]
+            f.write(col0+"|"+col1+"|"+col2+"|"+col3+"|"+str(col4)+"\n")
+
+    f.close()
+    print(result)
 
 def load_page():
     driver = webdriver.Chrome(options=chrome_options)
@@ -151,18 +197,19 @@ def cleanup_data():
 
             if is_training:
                 with open('./data/aircraft-data-training.txt', 'a', encoding='utf-8') as training_file:
-                    training_file.write(line)
+                    #training_file.write(line)
                     training_file.close()
 
             else:
                 with open('./data/aircraft-data-test.txt', 'a', encoding='utf-8') as test_file:
-                    test_file.write(line)
+                    #test_file.write(line)
                     test_file.close()
-    print()
     f.close()
 
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
+    print()
     # load_page()
-    cleanup_data()
+    # cleanup_data()
+    currency_exchange()
