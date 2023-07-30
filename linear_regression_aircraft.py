@@ -83,7 +83,7 @@ def compute_gradient_matrix(X, y, w, b):
     Computes the gradient for linear regression
 
     Args:
-      X : (array_like Shape (m,n)) variable such as house size
+      X : (array_like Shape (m,n)) variable such as aircraft seats size
       y : (array_like Shape (m,1)) actual value
       w : (array_like Shape (n,1)) Values of parameters of the model
       b : (scalar )                Values of parameter of the model
@@ -119,7 +119,7 @@ def plot_cost_i_w(X, y, hist,filename):
     ws = np.array([p[0] for p in hist["params"]])
     rng = max(abs(ws[:, 0].min()), abs(ws[:, 0].max()))
     wr = np.linspace(-rng + 0.27, rng + 0.27, 20)
-    cst = [compute_cost(X, y, np.array([wr[i], -32, -67]), 221) for i in range(len(wr))]
+    cst = [compute_cost(X, y, np.array([wr[i], 9950, -44]), 221) for i in range(len(wr))]
 
     fig, ax = plt.subplots(1, 2, figsize=(12, 3))
 
@@ -158,7 +158,7 @@ def run_linear_regression():
     print(f"Peak to Peak range by column in Raw        X:{np.ptp(X_train,axis=0)}")
     print(f"Peak to Peak range by column in Normalized X:{np.ptp(X_norm,axis=0)}")
 
-    w_norm, b_norm, hist = run_gradient_descent(X_norm, Y_train, 1000, 1.0e-1, )
+    w_norm, b_norm, hist = run_gradient_descent(X_norm, Y_train, 1000, alpha=1.0e-7)
 
     # predict target using normalized features
     m = X_norm.shape[0]
@@ -168,15 +168,15 @@ def run_linear_regression():
 
         # plot predictions and targets versus original features
     fig, ax = plt.subplots(1, 3, figsize=(12, 3), sharey=True)
-    plot_features(ax, X_norm, Y_train,X_features, "Price (1000's)", "./figures/features-unnormalized-plots.png")
+    plot_features(ax, X_norm, Y_train,X_features, "Price (1000's)", "./figures/features-normalized-plots.png")
 
     # First, normalize out example.
-    x_house = np.array([2007, 4, 510])
-    x_house_norm = (x_house - u) / o
-    print(x_house_norm)
-    x_house_predict = np.dot(x_house_norm, w_norm) + b_norm
+    x_predict = np.array([2020, 2, 0])
+    x_predict_norm = (x_predict - u) / o
+    print(x_predict_norm)
+    x_predict = np.dot(x_predict_norm, w_norm) + b_norm
     print(
-        f" predicted price of aircraft with 2007, 4 seats, 510 hours, 40 years old = ${x_house_predict * 1000:0.0f}")
+        f" predicted price of aircraft = ${x_predict * 1000:0.0f}")
 
 if __name__ == '__main__':
     run_linear_regression()
